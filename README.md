@@ -59,19 +59,18 @@ Copia y pega el siguiente código en el archivo config/database.py:
           return None
 ```
 
+## Descargar Dependencias
+
+```bash
+pip install -r requirements.txt
+```
+
 ## Funcionalidades
 - **Gestor de Destinos**: Crear, leer, actualizar y eliminar destinos.
 - **Gestor de Paquetes**: Crear y administrar paquetes turísticos con destinos seleccionados.
 - **Autenticación de Usuarios**: Registro seguro y autenticación con contraseñas cifradas.
 - **Sistema de Reservas**: Permite a los usuarios realizar y gestionar reservas.
 
-## Tecnologías Utilizadas
-- **Lenguaje**: Python
-- **Base de Datos**: MySQL
-- **Bibliotecas**:
-  - mysql-connector-python
-  - bcrypt (para hashing de contraseñas)
-- **Patrón de Diseño**: MVC (Modelo-Vista-Controlador)
 
 ## Estructura del Proyecto
 
