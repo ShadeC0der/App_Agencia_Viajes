@@ -73,4 +73,3 @@ class ReservaHandler:
             return
 
         self.controller.cancelar_reserva(int(id_reserva))
-    

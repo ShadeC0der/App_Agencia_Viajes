@@ -31,28 +31,29 @@ class PaqueteController:
         """
         Agrega un nuevo paquete a la base de datos y relaciona los destinos seleccionados.
         """
-        query_paquete = "INSERT INTO Paquetes (fecha_inicio, fecha_fin, precio_total) VALUES (%s, %s, %s)"
-        values_paquete = (paquete.fecha_inicio, paquete.fecha_fin, paquete.precio_total)
+        query_paquete = "INSERT INTO Paquetes (nombre, fecha_inicio, fecha_fin, precio_total) VALUES (%s, %s, %s, %s)"
+        values_paquete = (paquete.nombre, paquete.fecha_inicio, paquete.fecha_fin, paquete.precio_total)
 
         cursor = self.connection.cursor()
         cursor.execute(query_paquete, values_paquete)
-        id_paquete = cursor.lastrowid  # Obtener el ID del paquete recién insertado
+        id_paquete = cursor.lastrowid
 
-        # Asociar los destinos al paquete en la tabla intermedia
+        # Asociar destinos al paquete
         query_relacion = "INSERT INTO Paquete_Destino (id_paquete, id_destino, fecha_asignacion) VALUES (%s, %s, NOW())"
         for id_destino in destinos:
             cursor.execute(query_relacion, (id_paquete, id_destino))
 
         self.connection.commit()
-        print("Paquete agregado exitosamente.")
+        print(f"Paquete '{paquete.nombre}' agregado exitosamente.")
+
 
     def listar_paquetes(self):
         """
-        Lista todos los paquetes y sus destinos asociados.
+        Lista todos los paquetes y sus destinos asociados, incluyendo el nombre del paquete.
         """
         query = """
-            SELECT p.id_paquete, p.fecha_inicio, p.fecha_fin, p.precio_total, 
-                   GROUP_CONCAT(d.nombre) AS destinos
+            SELECT p.id_paquete, p.nombre, p.fecha_inicio, p.fecha_fin, p.precio_total, 
+                GROUP_CONCAT(d.nombre SEPARATOR ', ') AS destinos
             FROM Paquetes p
             LEFT JOIN Paquete_Destino pd ON p.id_paquete = pd.id_paquete
             LEFT JOIN Destinos d ON pd.id_destino = d.id_destino
@@ -64,15 +65,18 @@ class PaqueteController:
 
         paquetes = []
         for row in resultados:
-            id_paquete, fecha_inicio, fecha_fin, precio_total, destinos = row
+            id_paquete, nombre, fecha_inicio, fecha_fin, precio_total, destinos = row
             paquetes.append({
                 "id_paquete": id_paquete,
+                "nombre": nombre,
                 "fecha_inicio": fecha_inicio,
                 "fecha_fin": fecha_fin,
                 "precio_total": precio_total,
-                "destinos": destinos.split(",") if destinos else []
+                "destinos": destinos.split(", ") if destinos else []
             })
         return paquetes
+
+
 
     def eliminar_paquete(self, id_paquete):
         """

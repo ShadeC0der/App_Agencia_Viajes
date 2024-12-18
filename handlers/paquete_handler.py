@@ -31,6 +31,10 @@ class PaqueteHandler:
                 print("Opción no válida. Intente nuevamente.")
 
     def agregar_paquete(self):
+        """
+        Permite al usuario agregar un paquete turístico y selecciona los destinos asociados.
+        """
+        nombre = input("Nombre del paquete: ")
         fecha_inicio = input("Fecha de inicio (YYYY-MM-DD): ")
         fecha_fin = input("Fecha de fin (YYYY-MM-DD): ")
 
@@ -41,15 +45,23 @@ class PaqueteHandler:
         # Calcular precio total sumando el costo de los destinos seleccionados
         precio_total = self.controller.calcular_precio_total(destinos)
 
-        paquete = Paquete(fecha_inicio=fecha_inicio, fecha_fin=fecha_fin, precio_total=precio_total)
+        paquete = Paquete(nombre=nombre, fecha_inicio=fecha_inicio, fecha_fin=fecha_fin, precio_total=precio_total)
         self.controller.agregar_paquete(paquete, destinos)
 
+
     def listar_paquetes(self):
+        """
+        Lista todos los paquetes turísticos y sus destinos asociados.
+        """
         paquetes = self.controller.listar_paquetes()
+        print("\nLista de Paquetes:")
         for paquete in paquetes:
-            print(f"ID: {paquete['id_paquete']}, Fecha Inicio: {paquete['fecha_inicio']}, "
-                  f"Fecha Fin: {paquete['fecha_fin']}, Precio Total: {paquete['precio_total']:.2f}, "
-                  f"Destinos: {', '.join(paquete['destinos'])}")
+            print(
+                f"ID: {paquete['id_paquete']}, Nombre: {paquete['nombre']}, "
+                f"Fecha Inicio: {paquete['fecha_inicio']}, Fecha Fin: {paquete['fecha_fin']}, "
+                f"Precio Total: {paquete['precio_total']:.2f}, "
+                f"Destinos: {', '.join(paquete['destinos'])}"
+            )
 
     def eliminar_paquete(self):
         id_paquete = int(input("ID del paquete a eliminar: "))
