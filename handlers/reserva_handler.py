@@ -34,20 +34,44 @@ class ReservaHandler:
 
     def crear_reserva(self):
         """
-        Permite al usuario crear una reserva para un paquete turístico.
+        Permite al usuario crear una reserva para un paquete turístico con validaciones.
         """
-        id_paquete = input("ID del paquete a reservar: ")
+        def obtener_campo_obligatorio(mensaje):
+            """
+            Solicita un campo obligatorio y no permite continuar hasta que se ingrese un valor válido.
+            """
+            while True:
+                valor = input(f"{mensaje} (obligatorio): ").strip()
+                if valor:
+                    return valor
+                else:
+                    print("Este campo es obligatorio. Por favor, ingrese un valor.")
 
-        if not id_paquete.isdigit():
-            print("El ID del paquete debe ser un número.")
-            return
+        def obtener_campo_id_paquete():
+            """
+            Solicita el ID del paquete y no permite continuar hasta que se ingrese un número válido.
+            """
+            while True:
+                valor = input("ID del paquete a reservar (obligatorio): ").strip()
+                if valor.isdigit():
+                    return int(valor)
+                else:
+                    print("Debe ingresar un número válido para el ID del paquete.")
 
+        # Solicitar los datos de la reserva
+        id_paquete = obtener_campo_id_paquete()
+
+        # Crear la reserva con la fecha actual
+        from datetime import date
         reserva = Reserva(
             id_usuario=self.usuario_autenticado.id_usuario,
-            id_paquete=int(id_paquete),
+            id_paquete=id_paquete,
             fecha_reserva=date.today()
         )
+
+        # Registrar la reserva en la base de datos
         self.controller.crear_reserva(reserva)
+
 
     def listar_reservas(self):
         """

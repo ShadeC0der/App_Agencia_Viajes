@@ -34,10 +34,38 @@ class DestinoHandler:
                 print("Opción no válida. Intente nuevamente.")
 
     def agregar_destino(self):
-        nombre = input("Nombre del destino: ")
-        descripcion = input("Descripción: ")
-        actividades = input("Actividades: ")
-        costo = float(input("Costo: "))
+        """
+        Permite al usuario agregar un destino turístico con validaciones de campos obligatorios.
+        """
+        def obtener_campo_obligatorio(mensaje):
+            """
+            Solicita un campo obligatorio y no permite continuar hasta que se ingrese un valor válido.
+            """
+            while True:
+                valor = input(f"{mensaje} (obligatorio): ").strip()
+                if valor:
+                    return valor
+                else:
+                    print("Este campo es obligatorio. Por favor, ingrese un valor.")
+
+        def obtener_campo_costo():
+            """
+            Solicita el costo y no permite continuar hasta que se ingrese un valor numérico válido.
+            """
+            while True:
+                valor = input("Costo (obligatorio): ").strip()
+                try:
+                    return float(valor)
+                except ValueError:
+                    print("Debe ingresar un número válido para el costo.")
+
+        # Solicitar los datos del destino
+        nombre = obtener_campo_obligatorio("Nombre del destino")
+        descripcion = input("Descripción (opcional): ").strip()  # Descripción sigue siendo opcional
+        actividades = obtener_campo_obligatorio("Actividades")
+        costo = obtener_campo_costo()
+
+        # Crear el destino y agregarlo a la base de datos
         destino = Destino(nombre=nombre, descripcion=descripcion, actividades=actividades, costo=costo)
         self.controller.agregar_destino(destino)
 
