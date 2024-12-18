@@ -1,20 +1,19 @@
 # main.py
 
+from handlers.destino_handler import DestinoHandler
+
 """
 Este es el archivo principal del sistema de reservas 'Viajes Aventura'.
-Se utiliza como punto de entrada al programa.
 """
-
-from config.database import create_connection
 
 def main():
     """
-    Función principal que inicia la ejecución del programa y prueba la conexión a la base de datos.
+    Función principal que inicia la ejecución del programa.
     """
-    print("Iniciando el sistema de reservas 'Viajes Aventura'...")
+    print("Bienvenido al sistema de reservas 'Viajes Aventura'.")
 
-    # Probar la conexión a la base de datos
-    create_connection()
+    handler = DestinoHandler()
+    handler.menu_destinos()
 
 if __name__ == "__main__":
     main()
